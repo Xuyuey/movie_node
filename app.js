@@ -1,7 +1,12 @@
 var express = require('express') //加载express模块
 var port = process.env.PORT || 3000
 var path = require('path');
+var mongoose = require('mongoose')
+var _ = require('underscore')
+var Movie = require('./models/movie')
 var app = express()
+
+mongoose.connect('mongodb://localhost/imooc',{useMongoClient: true})
 
 app.set('views', path.join(__dirname, 'views/pages')) //视图根目录
 app.set('view engine','pug') 
@@ -15,51 +20,80 @@ console.log('imooc service on port' + port)
 
 //index page
 app.get('/',function(req,res){
-	res.render('index',{
-		title:'imooc 首页',
-		movies: [{
-			title: '机械',
-			_id: 1,
-			poster: 'http://r3.ykimg.com/05160000530EEB63675839160D0B79D5'
-		},{
-			title: '机械',
-			_id: 2,
-			poster: 'http://r3.ykimg.com/05160000530EEB63675839160D0B79D5'
-		},{
-			title: '机械',
-			_id: 3,
-			poster: 'http://r3.ykimg.com/05160000530EEB63675839160D0B79D5'
-		},{
-			title: '机械',
-			_id: 4,
-			poster: 'http://r3.ykimg.com/05160000530EEB63675839160D0B79D5'
-		},{
-			title: '机械',
-			_id: 5,
-			poster: 'http://r3.ykimg.com/05160000530EEB63675839160D0B79D5'
-		},{
-			title: '机械',
-			_id: 6,
-			poster: 'http://r3.ykimg.com/05160000530EEB63675839160D0B79D5'
-		}]
+	Movie.fetch(function(err,movies){
+		if (err)
+			console.log(err)
+	
+		res.render('index',{
+			title:'imooc 首页',
+			movies: movies
+		})
 	})
 })
 
 //detail page
 app.get('/movie/:id',function(req,res){
-	res.render('detail',{
-		title:'imooc 详情页',
-		movie: {
-			doctor: 'xuyeu',
-			country: 'spanish',
-			title: 'jixie',
-			year: '2003',
-			poster: 'http://r3.ykimg.com/05160000530EEB63675839160D0B79D5',
-			language: 'spanish',
-			flash: 'http://player.youku.com/player.php/sid/XNjA1Njc0NTUy/v.swf',
-			summary: '不开玩笑哒~~~介绍这篇和接下来几篇Node文章的内容，基本都属于Node的初阶，略偏实战，进阶和高阶内容正在YY中，最终的目录与里程碑下一篇应该差不多能定下来。　　本篇以介绍Express为话题，延伸出用Node开发小页面，然后其中穿插概述express主要的API、路由的原理、Node模块概念，顺便也会介绍自己使用Node工具等等。默认看官们都具备JavaScript基础，所以过于基础的内容俺就不浪费篇幅咯，GOGO。'
-		}
+	var id = req.params.id
+
+	Movie.findById(id, function(err, movie){
+		if (err)
+			console.log(err)
+		res.render('detail',{
+			title:'imooc '+ movie.title,
+			movie: movie
+	    })
 	})
+})
+//admin update movie
+app.get('/admin/movie/:id',function(res, req){
+	var id = req.params.id
+
+	if(id){
+		Movie.findById(id, function(err, movie){
+			res.render('admin',{
+				title: 'imooc 后台更新页',
+				movie: movie
+			})
+		})
+	}
+})
+
+//admin post movie
+app.post('/admin/movie/new', function(res, req){
+	var id = req.body.movie._id
+	var movieObj = req.body.movie
+	var _movie =null
+
+	if(id != 'undefined'){
+		Movie.findById(id ,function(err, movie){
+			if (err)
+				console.log(err)
+			_movie = _.extend(movie, movieObj)
+			_movie.save(function(err, movie){
+				if (err)
+					console.log(err)
+				res.redirect('/movie/'+movie._id)
+			})
+		})
+	}
+	else{
+		_movie = new Movie({
+			doctor: movieObj.doctor,
+			title: movieObj.title,
+			language: movieObj.language,
+			country: movieObj.country,
+			summary: movieObj.summary,
+			flash: movieObj.flash,
+			poster: movieObj.poster,
+			year: movieObj.year
+		})
+
+		_movie.save(function(err, movie){
+			if (err)
+				console.log(err)
+			res.redirect('/movie/'+movie._id)
+		})
+	}
 })
 
 //admin page
@@ -81,19 +115,14 @@ app.get('/admin/movie',function(req,res){
 
 //list page
 app.get('/admin/list',function(req,res){
-	res.render('list',{
-		title:'imooc 列表页',
-		movies: [{
-			title: 'jixie',
-			_id: 1,
-			doctor: 'xuyeu',
-			country: 'spanish',
-			year: '2003',
-			poster: 'http://r3.ykimg.com/05160000530EEB63675839160D0B79D5',
-			language: 'spanish',
-			flash: 'http://player.youku.com/player.php/sid/XNjA1Njc0NTUy/v.swf',
-			summary: '不开玩笑哒~~~介绍这篇和接下来几篇Node文章的内容，基本都属于Node的初阶，略偏实战，进阶和高阶内容正在YY中，最终的目录与里程碑下一篇应该差不多能定下来。　　本篇以介绍Express为话题，延伸出用Node开发小页面，然后其中穿插概述express主要的API、路由的原理、Node模块概念，顺便也会介绍自己使用Node工具等等。默认看官们都具备JavaScript基础，所以过于基础的内容俺就不浪费篇幅咯，GOGO。'
-		}]
+	Movie.fetch(function(err,movies){
+		if (err)
+			console.log(err)
+
+		res.render('list',{
+			title:'imooc 列表页',
+			movies: movies
+		})
 	})
 })
 
