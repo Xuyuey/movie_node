@@ -1,12 +1,13 @@
 {
   "name": "xuyuetest",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "private": true,
   "scripts": {
     "start": "node ./bin/www"
   },
   "dependencies": {
     "body-parser": "^1.17.2",
+    "bower": "^1.8.2",
     "connect": "^3.6.3",
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.3",
@@ -18,5 +19,21 @@
     "pug": "^2.0.0-rc.4",
     "serve-favicon": "~2.4.2",
     "underscore": "^1.8.3"
-  }
+  },
+  "description": "imooc movie",
+  "main": "app.js",
+  "devDependencies": {
+    "grunt-contrib-nodemon": "^0.5.4",
+    "grunt-contrib-watch": "^1.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Xuyuey/movie_node.git"
+  },
+  "author": "xuyue",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Xuyuey/movie_node/issues"
+  },
+  "homepage": "https://github.com/Xuyuey/movie_node#readme"
 }

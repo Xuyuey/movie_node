@@ -1,0 +1,25 @@
+{
+  "name": "xuyuetest",
+  "description": "0.0.1",
+  "main": "",
+  "authors": [
+    "徐玥 <xuyue_ustb@163.com>"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "imooc"
+  ],
+  "homepage": "https://github.com/Xuyuey/movie_node",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "public/libs",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "^3.3.7"
+  }
+}
