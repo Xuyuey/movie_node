@@ -6,16 +6,21 @@
     "start": "node ./bin/www"
   },
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "body-parser": "^1.17.2",
     "bower": "^1.8.2",
     "connect": "^3.6.3",
-    "cookie-parser": "~1.4.3",
+    "connect-mongo": "^1.3.2",
+    "cookie-parser": "^1.4.3",
     "debug": "~2.6.3",
     "express": "^4.15.4",
+    "express-session": "^1.15.6",
+    "grunt": "^1.0.1",
+    "grunt-cli": "^1.2.0",
     "jade": "~1.11.0",
     "moment": "^2.18.1",
     "mongoose": "^4.11.12",
-    "morgan": "~1.8.1",
+    "morgan": "^1.8.2",
     "pug": "^2.0.0-rc.4",
     "serve-favicon": "~2.4.2",
     "underscore": "^1.8.3"
@@ -23,8 +28,10 @@
   "description": "imooc movie",
   "main": "app.js",
   "devDependencies": {
+    "grunt-concurrent": "^2.3.1",
     "grunt-contrib-nodemon": "^0.5.4",
-    "grunt-contrib-watch": "^1.0.0"
+    "grunt-contrib-watch": "^1.0.0",
+    "grunt-nodemon": "^0.4.2"
   },
   "repository": {
     "type": "git",
