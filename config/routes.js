@@ -1,6 +1,7 @@
 var Index = require('../app/controllers/index')
 var User = require('../app/controllers/user')
 var Movie = require('../app/controllers/movie')
+var Comment = require('../app/controllers/comment')
 
 module.exports = function(app){
     //预处理
@@ -20,7 +21,10 @@ module.exports = function(app){
     app.get('/signup', User.showSignup)
     app.get('/logout', User.logout)
     app.get('/admin/user/list', User.signinRequired, User.adminRequired, User.list)
-
+    
+    //comment
+    app.post('/user/comment', User.signinRequired, Comment.save)
+    
     //Movie
     app.get('/movie/:id', Movie.detail)
     app.get('/admin/movie/update/:id', User.signinRequired, User.adminRequired, Movie.update)
