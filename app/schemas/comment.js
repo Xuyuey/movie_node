@@ -3,7 +3,7 @@ var Schema = mongoose.Schema
 var ObjectId = Schema.Types.ObjectId
 
 var CommentSchema = new mongoose.Schema({
-    movie: {type: ObjectId, ref: 'Movie'},
+    movie: {type: ObjectId, ref: 'movie'},
     from: {type: ObjectId, ref: 'User'},
     reply: [{
         from: {type: ObjectId, ref: 'User'},

@@ -30,7 +30,10 @@ app.set('views', path.join(__dirname, 'app/views/pages')) //视图根目录
 app.set('view engine','pug') 
 
 var bodyParser = require('body-parser');
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({extended: true}))
+
+var multipart = require('connect-multiparty')
+app.use(multipart())
 
 app.use(express.static(path.join(__dirname, 'public')))
 app.listen(port)
